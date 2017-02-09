@@ -1,6 +1,6 @@
 # compox
 
-`compox`主要是包含compMgr和createApp两个部分，主要是控制架构的控件的解析和渲染机制
+`compox`主要是包含compMgr和createApp两个部分，主要是控制控件的解析和渲染机制
 
 ## 开发技术说明
 
