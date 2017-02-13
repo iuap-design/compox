@@ -1,23 +1,53 @@
-# compox
 
-`compox`主要是包含compMgr和createApp两个部分，主要是控制控件的解析和渲染机制
+[![npm version](https://img.shields.io/npm/v/compox.svg)](https://www.npmjs.com/package/compox)
+[![Build Status](https://img.shields.io/travis/iuap-design/compox/master.svg)](https://travis-ci.org/iuap-design/compox)
+[![devDependency Status](https://img.shields.io/david/dev/iuap-design/compox.svg)](https://david-dm.org/iuap-design/compox#info=devDependencies)
+[![NPM downloads](http://img.shields.io/npm/dm/compox.svg?style=flat)](https://npmjs.org/package/compox)
 
-## 开发技术说明
 
-* 基于Webpack构建资源.
-* 使用ES6语法特性.
-* 导出[umd](https://github.com/umdjs/umd)格式文件，随处使用.
-* 使用[Mocha](http://mochajs.org/) 和 [Chai](http://chaijs.com/) 进行项目测试.
-* [ESLint](http://eslint.org/)帮助我们进行代码规范检测.
+[中文文档](./README_CN.md)
+##  介绍
+`compox` contains two parts of compMgr and createApp to handle the core mechanism of control analysis and rendering
 
-## 如何开发
+## Contributing
 
-安装依赖
+
+### Feedback
+
+If you encounter any problems , submit [issues](https://github.com/iuap-design/compox/issues),or pull request。
+
+[PR code](CONTRIBUTING.md)
+
+### Develop
+
+Developers can participate in the development of compox,  but also can be based on compox two development
+
+
+compox use gulp.js and webpack build the project.
+
+
+clone：
+
+```
+$ git clone git@github.com:iuap-design/compox.git
+```
+
+install：
+
 ```
 $ npm install
 ```
 
-编译产出
+build：
+
 ```
 $ npm run product
 ```
+
+### Website Chat Group
+
+527124070
+
+## Licence 版权
+
+[MIT](./LICENSE)
