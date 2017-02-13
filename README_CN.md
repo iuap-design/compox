@@ -24,10 +24,10 @@
 
 ### 开发及构建
 
-开发者可以一起参与为 kero 贡献代码，同时也可以基于 kero 进行二次开发或封装插件。
+开发者可以一起参与为 compox 贡献代码，同时也可以基于 compox 进行二次开发或封装插件。
 
 
-neoui 使用 [gulp.js](http://gulpjs.com/) 构建项目。
+compox 使用 [gulp.js](http://gulpjs.com/) 构建项目。
 
 克隆项目文件:
 
