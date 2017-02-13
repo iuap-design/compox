@@ -6,7 +6,7 @@
 
 
 [中文文档](./README_CN.md)
-##  介绍
+##  Introduction
 `compox` contains two parts of compMgr and createApp to handle the core mechanism of control analysis and rendering
 
 ## Contributing
