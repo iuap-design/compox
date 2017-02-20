@@ -1,5 +1,5 @@
-<a name="3.1.25"></a>
-## 3.1.25 (2017-02-10)
+<a name="3.1.26"></a>
+## [3.1.26](https://github.com/iuap-design/compox/compare/332f820...v3.1.26) (2017-02-20)
 
 
 ### Features

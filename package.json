@@ -1,6 +1,6 @@
 {
   "name": "compox",
-  "version": "3.1.25",
+  "version": "3.1.26",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,11 +10,11 @@
     "es": "babel src -d lib",
     "prod": "npm run es && npm run build",
     "product": "npm run es && npm run build && npm run dev",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && node changeSort.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "utipbuild": "npm run es && npm run build && npm run dev"
   },
   "dependencies": {
-    "tinper-sparrow": "^3.1.25"
+    "tinper-sparrow": "^3.1.26"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
