@@ -4,8 +4,8 @@
  * Date   : 2017-01-17 10:13:10
  */
 import {compMgr} from './compMgr';
-import {each, isArray} from 'tinper-sparrow/js/util';
-import {hotkeys} from 'tinper-sparrow/js/util/hotKeys';
+import {each, isArray} from 'tinper-sparrow/src/util';
+import {hotkeys} from 'tinper-sparrow/src/util/hotKeys';
 
 class App {
     constructor(){

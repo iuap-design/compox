@@ -1,14 +1,14 @@
 import {
 	compMgr
 } from './compMgr';
-import {extend} from 'tinper-sparrow/js/extend';
+import {extend} from 'tinper-sparrow/src/extend';
 import {
 	on,
 	off,
 	trigger,
 	stopEvent,
 	event
-} from 'tinper-sparrow/js/event';
+} from 'tinper-sparrow/src/event';
 import {
     App,
     createApp
