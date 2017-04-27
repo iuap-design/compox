@@ -6,8 +6,7 @@ import {
 	on,
 	off,
 	trigger,
-	stopEvent,
-	event
+	stopEvent
 } from 'tinper-sparrow/src/event';
 import {
     App,
