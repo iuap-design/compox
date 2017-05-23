@@ -1,5 +1,5 @@
 /**
- * compox v3.2.0
+ * compox v3.2.1
  * 
  * author : yonyou FED
  * homepage : https://github.com/iuap-design/compox#readme
@@ -15,19 +15,20 @@
  * Date	  : 2016-07-28 14:41:17
  */
 
-var on$1 = function on(element, eventName, child, listener) {
-	if (!element) return;
-	if (arguments.length < 4) {
+var on$1 = function(element, eventName, child, listener) {
+	if(!element)
+		return;
+	if(arguments.length < 4) {
 		listener = child;
 		child = undefined;
 	} else {
-		var childlistener = function childlistener(e) {
-			if (!e) {
+		var childlistener = function(e) {
+			if(!e) {
 				return;
 			}
 			var tmpchildren = element.querySelectorAll(child);
-			tmpchildren.forEach(function (node) {
-				if (node == e.target) {
+			tmpchildren.forEach(function(node) {
+				if(node == e.target) {
 					listener.call(e.target, e);
 				}
 			});
@@ -35,49 +36,49 @@ var on$1 = function on(element, eventName, child, listener) {
 	}
 	//capture = capture || false;
 
-	if (!element["uEvent"]) {
+	if(!element["uEvent"]) {
 		//在dom上添加记录区
 		element["uEvent"] = {};
 	}
 	//判断是否元素上是否用通过on方法填加进去的事件
-	if (!element["uEvent"][eventName]) {
+	if(!element["uEvent"][eventName]) {
 		element["uEvent"][eventName] = [child ? childlistener : listener];
-		if (u.event && u.event[eventName] && u.event[eventName].setup) {
+		if(u.event && u.event[eventName] && u.event[eventName].setup) {
 			u.event[eventName].setup.call(element);
 		}
-		element["uEvent"][eventName + 'fn'] = function (e) {
+		element["uEvent"][eventName + 'fn'] = function(e) {
 			//火狐下有问题修改判断
-			if (!e) e = typeof event != 'undefined' && event ? event : window.event;
-			element["uEvent"][eventName].forEach(function (fn) {
+			if(!e)
+				e = typeof event != 'undefined' && event ? event : window.event;
+			element["uEvent"][eventName].forEach(function(fn) {
 				try {
 					e.target = e.target || e.srcElement; //兼容IE8
-				} catch (ee) {}
-				if (fn) fn.call(element, e);
+				} catch(ee) {}
+				if(fn)
+					fn.call(element, e);
 			});
 		};
-		if (element.addEventListener) {
-			// 用于支持DOM的浏览器
+		if(element.addEventListener) { // 用于支持DOM的浏览器
 			element.addEventListener(eventName, element["uEvent"][eventName + 'fn']);
-		} else if (element.attachEvent) {
-			// 用于IE浏览器
+		} else if(element.attachEvent) { // 用于IE浏览器
 			element.attachEvent("on" + eventName, element["uEvent"][eventName + 'fn']);
-		} else {
-			// 用于其它浏览器
+		} else { // 用于其它浏览器
 			element["on" + eventName] = element["uEvent"][eventName + 'fn'];
 		}
 	} else {
 		//如果有就直接往元素的记录区添加事件
 		var lis = child ? childlistener : listener;
 		var hasLis = false;
-		element["uEvent"][eventName].forEach(function (fn) {
-			if (fn == lis) {
+		element["uEvent"][eventName].forEach(function(fn) {
+			if(fn == lis) {
 				hasLis = true;
 			}
 		});
-		if (!hasLis) {
+		if(!hasLis) {
 			element["uEvent"][eventName].push(child ? childlistener : listener);
 		}
 	}
+
 };
 
 /**
@@ -90,13 +91,13 @@ var on$1 = function on(element, eventName, child, listener) {
  * @param {Object} element
  * @param {Object} value
  */
-var hasClass = function hasClass(element, value) {
-	if (!element) return false;
-	if (element.nodeName && (element.nodeName === '#text' || element.nodeName === '#comment')) return false;
-	if (typeof element.classList === 'undefined') {
-		if (u._hasClass) {
+var hasClass = function(element, value) {
+	if(!element) return false;
+	if(element.nodeName && (element.nodeName === '#text' || element.nodeName === '#comment')) return false;
+	if(typeof element.classList === 'undefined') {
+		if(u._hasClass){
 			return u._hasClass(element, value);
-		} else {
+		}else{
 			return $(element).hasClass(value);
 		}
 
@@ -104,6 +105,70 @@ var hasClass = function hasClass(element, value) {
 	} else {
 		return element.classList.contains(value);
 	}
+};
+
+/**
+ * Module : Sparrow util tools
+ * Author : Kvkens(yueming@yonyou.com)
+ * Date	  : 2016-07-27 21:46:50
+ */
+
+/**
+ * 创建一个带壳的对象,防止外部修改
+ * @param {Object} proto
+ */
+var isArray = Array.isArray || function(val) {
+	return Object.prototype.toString.call(val) === '[object Array]';
+};
+var inArray = function(node, arr) {
+	if(!arr instanceof Array) {
+		throw "arguments is not Array";
+	}
+	for(var i = 0, k = arr.length; i < k; i++) {
+		if(node == arr[i]) {
+			return true;
+		}
+	}
+	return false;
+};
+var each = function(obj, callback) {
+	if(obj.forEach) {
+		obj.forEach(function(v, k) {
+			callback(k, v);
+		});
+
+	} else if(obj instanceof Object) {
+		for(var k in obj) {
+			callback(k, obj[k]);
+		}
+	} else {
+		return;
+	}
+
+};
+try{
+	NodeList.prototype.forEach = Array.prototype.forEach;
+}catch(e){
+	
+}
+
+
+/**
+ * 获得字符串的字节长度
+ */
+String.prototype.lengthb = function() {
+	//	var str = this.replace(/[^\x800-\x10000]/g, "***");
+	var str = this.replace(/[^\x00-\xff]/g, "**");
+	return str.length;
+};
+
+/**
+ * 将AFindText全部替换为ARepText
+ */
+String.prototype.replaceAll = function(AFindText, ARepText) {
+	//自定义String对象的方法
+	var raRegExp = new RegExp(AFindText, "g");
+	return this.replace(raRegExp, ARepText);
 };
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -126,65 +191,6 @@ var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
-};
-
-/**
- * Module : Sparrow util tools
- * Author : Kvkens(yueming@yonyou.com)
- * Date	  : 2016-07-27 21:46:50
- */
-
-/**
- * 创建一个带壳的对象,防止外部修改
- * @param {Object} proto
- */
-var isArray = Array.isArray || function (val) {
-	return Object.prototype.toString.call(val) === '[object Array]';
-};
-var inArray = function inArray(node, arr) {
-	if (!arr instanceof Array) {
-		throw "arguments is not Array";
-	}
-	for (var i = 0, k = arr.length; i < k; i++) {
-		if (node == arr[i]) {
-			return true;
-		}
-	}
-	return false;
-};
-var each = function each(obj, callback) {
-	if (obj.forEach) {
-		obj.forEach(function (v, k) {
-			callback(k, v);
-		});
-	} else if (obj instanceof Object) {
-		for (var k in obj) {
-			callback(k, obj[k]);
-		}
-	} else {
-		return;
-	}
-};
-try {
-	NodeList.prototype.forEach = Array.prototype.forEach;
-} catch (e) {}
-
-/**
- * 获得字符串的字节长度
- */
-String.prototype.lengthb = function () {
-	//	var str = this.replace(/[^\x800-\x10000]/g, "***");
-	var str = this.replace(/[^\x00-\xff]/g, "**");
-	return str.length;
-};
-
-/**
- * 将AFindText全部替换为ARepText
- */
-String.prototype.replaceAll = function (AFindText, ARepText) {
-	//自定义String对象的方法
-	var raRegExp = new RegExp(AFindText, "g");
-	return this.replace(raRegExp, ARepText);
 };
 
 /**
@@ -440,13 +446,15 @@ var compMgr = CompMgr;
 
 var enumerables = true;
 var enumerablesTest = {
-	toString: 1
-};
-for (var i in enumerablesTest) {
+		toString: 1
+	};
+for(var i in enumerablesTest) {
 	enumerables = null;
 }
-if (enumerables) {
-	enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
+if(enumerables) {
+	enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
+		'toLocaleString', 'toString', 'constructor'
+	];
 }
 
 /**
@@ -461,21 +469,21 @@ if (enumerables) {
  * @param {Object}  目标对象
  * @param {config} 源对象
  */
-var extend = function extend(object, config) {
+var extend = function(object, config) {
 	var args = arguments,
-	    options;
-	if (args.length > 1) {
-		for (var len = 1; len < args.length; len++) {
+		options;
+	if(args.length > 1) {
+		for(var len = 1; len < args.length; len++) {
 			options = args[len];
-			if (object && options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+			if(object && options && typeof options === 'object') {
 				var i, j, k;
-				for (i in options) {
+				for(i in options) {
 					object[i] = options[i];
 				}
-				if (enumerables) {
-					for (j = enumerables.length; j--;) {
+				if(enumerables) {
+					for(j = enumerables.length; j--;) {
 						k = enumerables[j];
-						if (options.hasOwnProperty && options.hasOwnProperty(k)) {
+						if(options.hasOwnProperty && options.hasOwnProperty(k)) {
 							object[k] = options[k];
 						}
 					}
@@ -486,7 +494,7 @@ var extend = function extend(object, config) {
 	return object;
 };
 
-if (!Object.assign) {
+if(!Object.assign){
 	Object.assign = extend;
 }
 
@@ -496,8 +504,8 @@ if (!Object.assign) {
  * Date	  : 2016-07-28 08:45:39
  */
 
-var Class = function Class(o) {
-	if (!(this instanceof Class) && isFunction(o)) {
+var Class = function(o) {
+	if(!(this instanceof Class) && isFunction(o)) {
 		return classify(o);
 	}
 };
@@ -515,8 +523,8 @@ var Class = function Class(o) {
 //    }
 // })
 //
-Class.create = function (parent, properties) {
-	if (!isFunction(parent)) {
+Class.create = function(parent, properties) {
+	if(!isFunction(parent)) {
 		properties = parent;
 		parent = null;
 	}
@@ -532,14 +540,14 @@ Class.create = function (parent, properties) {
 		parent.apply(this, arguments);
 
 		// Only call initialize in self constructor.
-		if (this.constructor === SubClass && this.initialize) {
+		if(this.constructor === SubClass && this.initialize) {
 			ret = this.initialize.apply(this, arguments);
 		}
 		return ret ? ret : this;
 	}
 
 	// Inherit class (static) properties from parent.
-	if (parent !== Class) {
+	if(parent !== Class) {
 		mix(SubClass, parent, parent.StaticsWhiteList);
 	}
 
@@ -553,10 +561,10 @@ Class.create = function (parent, properties) {
 function implement(properties) {
 	var key, value;
 
-	for (key in properties) {
+	for(key in properties) {
 		value = properties[key];
 
-		if (Class.Mutators.hasOwnProperty(key)) {
+		if(Class.Mutators.hasOwnProperty(key)) {
 			Class.Mutators[key].call(this, value);
 		} else {
 			this.prototype[key] = value;
@@ -565,7 +573,7 @@ function implement(properties) {
 }
 
 // Create a sub Class based on `Class`.
-Class.extend = function (properties) {
+Class.extend = function(properties) {
 	properties || (properties = {});
 	properties.Extends = this;
 
@@ -581,7 +589,7 @@ function classify(cls) {
 // Mutators define special properties.
 Class.Mutators = {
 
-	'Extends': function Extends(parent) {
+	'Extends': function(parent) {
 		var existed = this.prototype;
 		var proto = createProto(parent.prototype);
 
@@ -599,17 +607,17 @@ Class.Mutators = {
 		this.superclass = parent.prototype;
 	},
 
-	'Implements': function Implements(items) {
+	'Implements': function(items) {
 		isArray$1(items) || (items = [items]);
 		var proto = this.prototype,
-		    item;
+			item;
 
-		while (item = items.shift()) {
+		while(item = items.shift()) {
 			mix(proto, item.prototype || item);
 		}
 	},
 
-	'Statics': function Statics(staticProperties) {
+	'Statics': function(staticProperties) {
 		mix(this, staticProperties);
 	}
 };
@@ -618,26 +626,28 @@ Class.Mutators = {
 function Ctor() {}
 
 // See: http://jsperf.com/object-create-vs-new-ctor
-var createProto = Object.__proto__ ? function (proto) {
-	return {
-		__proto__: proto
+var createProto = Object.__proto__ ?
+	function(proto) {
+		return {
+			__proto__: proto
+		}
+	} :
+	function(proto) {
+		Ctor.prototype = proto;
+		return new Ctor();
 	};
-} : function (proto) {
-	Ctor.prototype = proto;
-	return new Ctor();
-};
 
 // Helpers
 // ------------
 
 function mix(r, s, wl) {
 	// Copy "all" properties including inherited ones.
-	for (var p in s) {
-		if (s.hasOwnProperty(p)) {
-			if (wl && indexOf(wl, p) === -1) continue;
+	for(var p in s) {
+		if(s.hasOwnProperty(p)) {
+			if(wl && indexOf(wl, p) === -1) continue;
 
 			// 在 iPhone 1 代等设备的 Safari 中，prototype 也会被枚举出来，需排除
-			if (p !== 'prototype') {
+			if(p !== 'prototype') {
 				r[p] = s[p];
 			}
 		}
@@ -646,20 +656,20 @@ function mix(r, s, wl) {
 
 var toString$1 = Object.prototype.toString;
 
-var isArray$1 = Array.isArray || function (val) {
+var isArray$1 = Array.isArray || function(val) {
 	return toString$1.call(val) === '[object Array]';
 };
 
-var isFunction = function isFunction(val) {
+var isFunction = function(val) {
 	return toString$1.call(val) === '[object Function]';
 };
 
-var indexOf = function indexOf(arr, item) {
-	if (Array.prototype.indexOf && arr.indexOf) {
+var indexOf = function(arr, item) {
+	if(Array.prototype.indexOf && arr.indexOf) {
 		return arr.indexOf(item);
 	} else {
-		for (var i = 0, len = arr.length; i < len; i++) {
-			if (arr[i] === item) {
+		for(var i = 0, len = arr.length; i < len; i++) {
+			if(arr[i] === item) {
 				return i;
 			}
 		}
@@ -693,21 +703,20 @@ hotkeys.add = function (combi, options, callback) {
         options = {};
     }
     var opt = {},
-        defaults = { type: 'keydown', propagate: false, disableInInput: false, target: document.body, checkParent: true },
+        defaults = {type: 'keydown', propagate: false, disableInInput: false, target: document.body, checkParent: true},
         that = this;
     opt = extend(opt, defaults, options || {});
     combi = combi.toLowerCase();
 
     // inspect if keystroke matches
-    var inspector = function inspector(event) {
+    var inspector = function (event) {
         //event = $.event.fix(event); // jQuery event normalization.
-        var element = this; //event.target;
+        var element = this;//event.target;
         // @ TextNode -> nodeType == 3
-        element = element.nodeType == 3 ? element.parentNode : element;
+        element = (element.nodeType == 3) ? element.parentNode : element;
 
-        if (opt['disableInInput']) {
-            // Disable shortcut keys in Input, Textarea fields
-            var target = element; //$(element);
+        if (opt['disableInInput']) { // Disable shortcut keys in Input, Textarea fields
+            var target = element;//$(element);
             if (target.tagName == "INPUT" || target.tagName == "TEXTAREA") {
                 return;
             }
@@ -719,35 +728,33 @@ hotkeys.add = function (combi, options, callback) {
             shift = event.shiftKey,
             ctrl = event.ctrlKey,
             alt = event.altKey,
-            propagate = true,
-            // default behaivour
-        mapPoint = null;
+            propagate = true, // default behaivour
+            mapPoint = null;
 
         // in opera + safari, the event.target is unpredictable.
         // for example: 'keydown' might be associated with HtmlBodyElement
         // or the element where you last clicked with your mouse.
         if (opt.checkParent) {
-            //              while (!that.all[element] && element.parentNode){
+//              while (!that.all[element] && element.parentNode){
             while (!element['hotkeys'] && element.parentNode) {
                 element = element.parentNode;
             }
         }
 
-        //          var cbMap = that.all[element].events[type].callbackMap;
+//          var cbMap = that.all[element].events[type].callbackMap;
         var cbMap = element['hotkeys'].events[type].callbackMap;
-        if (!shift && !ctrl && !alt) {
-            // No Modifiers
+        if (!shift && !ctrl && !alt) { // No Modifiers
             mapPoint = cbMap[special] || cbMap[character];
         }
         // deals with combinaitons (alt|ctrl|shift+anything)
         else {
-                var modif = '';
-                if (alt) modif += 'alt+';
-                if (ctrl) modif += 'ctrl+';
-                if (shift) modif += 'shift+';
-                // modifiers + special keys or modifiers + characters or modifiers + shift characters
-                mapPoint = cbMap[modif + special] || cbMap[modif + character] || cbMap[modif + that.shift_nums[character]];
-            }
+            var modif = '';
+            if (alt) modif += 'alt+';
+            if (ctrl) modif += 'ctrl+';
+            if (shift) modif += 'shift+';
+            // modifiers + special keys or modifiers + characters or modifiers + shift characters
+            mapPoint = cbMap[modif + special] || cbMap[modif + character] || cbMap[modif + that.shift_nums[character]];
+        }
         if (mapPoint) {
             mapPoint.cb(event);
             if (!mapPoint.propagate) {
@@ -760,22 +767,22 @@ hotkeys.add = function (combi, options, callback) {
     // first hook for this element
     var data = opt.target['hotkeys'];
     if (!data) {
-        opt.target['hotkeys'] = data = { events: {} };
+        opt.target['hotkeys'] =  data = {events: {}};
     }
-    //      if (!hotkeys.all[opt.target]){
-    //          hotkeys.all[opt.target] = {events:{}};
-    //      }
+//      if (!hotkeys.all[opt.target]){
+//          hotkeys.all[opt.target] = {events:{}};
+//      }
     if (!data.events[opt.type]) {
-        data.events[opt.type] = { callbackMap: {} };
+        data.events[opt.type] = {callbackMap: {}};
         on(opt.target, opt.type, inspector);
         //$.event.add(opt.target, opt.type, inspector);
     }
-    //      if (!hotkeys.all[opt.target].events[opt.type]){
-    //          hotkeys.all[opt.target].events[opt.type] = {callbackMap: {}}
-    //          $.event.add(opt.target, opt.type, inspector);
-    //      }
-    data.events[opt.type].callbackMap[combi] = { cb: callback, propagate: opt.propagate };
-    //      hotkeys.all[opt.target].events[opt.type].callbackMap[combi] =  {cb: callback, propagate:opt.propagate};
+//      if (!hotkeys.all[opt.target].events[opt.type]){
+//          hotkeys.all[opt.target].events[opt.type] = {callbackMap: {}}
+//          $.event.add(opt.target, opt.type, inspector);
+//      }
+    data.events[opt.type].callbackMap[combi] = {cb: callback, propagate: opt.propagate};
+//      hotkeys.all[opt.target].events[opt.type].callbackMap[combi] =  {cb: callback, propagate:opt.propagate};
     return hotkeys;
 };
 hotkeys.remove = function (exp, opt) {
@@ -789,28 +796,31 @@ hotkeys.remove = function (exp, opt) {
 
 hotkeys.scan = function (element, target) {
     element = element || document.body;
-    element.querySelectorAll('[u-enter]').forEach(function (el) {
+    element.querySelectorAll('[u-enter]').forEach(function(el){
         var enterValue = el.getAttribute('u-enter');
         if (!enterValue) return;
-        if (enterValue.substring(0, 1) == '#') hotkeys.add('enter', { target: this }, function () {
-            var _el = element.querySelector(enterValue);
-            if (_el) {
-                _el.focus();
-            }
-        });else {
+        if (enterValue.substring(0, 1) == '#')
+            hotkeys.add('enter', {target: this}, function () {
+                var _el = element.querySelector(enterValue);
+                if (_el){
+                    _el.focus();
+                }
+            });
+        else {
             target = target || window;
             var func = h(target, enterValue);
-            hotkeys.add('enter', { target: this }, function () {
+            hotkeys.add('enter', {target: this}, function () {
                 func.call(this);
             });
         }
     });
-    element.querySelectorAll('[u-hotkey]').forEach(function (el) {
+    element.querySelectorAll('[u-hotkey]').forEach(function(el){
         var hotkey = el.getAttribute('u-hotkey');
         if (!hotkey) return;
         hotkeys.add(hotkey, function () {
             el.click();
         });
+
     });
 };
 
