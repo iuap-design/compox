@@ -24,6 +24,7 @@ const init = function (viewModel, element, doApplyBindings) {
         element = [element];
     }
     this.elements = element;
+    this.comps = [];
     each(this.elements, function (i, element) {
         if (typeof element === 'string'){
             element = document.querySelector(element);
@@ -37,6 +38,7 @@ const init = function (viewModel, element, doApplyBindings) {
                         self.adjustFunc.call(self, options);
                     var comp = compMgr.createDataAdapter({el:ele,options:options,model:viewModel,app:self});
                     ele['u-meta'] = comp;
+                    self.comps.push(comp);
                 }
             })
         }
