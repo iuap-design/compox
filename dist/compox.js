@@ -1,5 +1,5 @@
 /**
- * compox v3.2.1
+ * compox v3.2.2
  * 
  * author : yonyou FED
  * homepage : https://github.com/iuap-design/compox#readme
@@ -846,6 +846,7 @@ var init = function init(viewModel, element, doApplyBindings) {
         element = [element];
     }
     this.elements = element;
+    this.comps = [];
     each(this.elements, function (i, element) {
         if (typeof element === 'string') {
             element = document.querySelector(element);
@@ -858,6 +859,7 @@ var init = function init(viewModel, element, doApplyBindings) {
                     if (self.adjustFunc) self.adjustFunc.call(self, options);
                     var comp = compMgr.createDataAdapter({ el: ele, options: options, model: viewModel, app: self });
                     ele['u-meta'] = comp;
+                    self.comps.push(comp);
                 }
             });
         }

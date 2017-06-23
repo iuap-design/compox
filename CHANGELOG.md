@@ -1,3 +1,13 @@
+<a name="3.2.2"></a>
+## [3.2.2](https://github.com/iuap-design/compox/compare/v3.2.1...v3.2.2) (2017-06-13)
+
+
+### Bug Fixes
+
+* 优化app的getComp相关api ([067acb8](https://github.com/iuap-design/compox/commit/067acb8))
+
+
+
 <a name="3.2.1"></a>
 ## [3.2.1](https://github.com/iuap-design/compox/compare/v3.2.0...v3.2.1) (2017-05-05)
 
