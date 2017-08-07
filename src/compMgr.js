@@ -219,6 +219,9 @@ var CompMgr = {
         };
         this.registeredControls.push(newConfig);
     },
+    /**
+     * 重新渲染ui控件
+     */
     updateComp: function(ele) {
         this._reorderComps();
         for (var n = 0; n < this.registeredControls.length; n++) {
